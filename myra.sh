@@ -18,10 +18,10 @@ if [ ! -s "resolvers.txt" ] || [[ $(find resolvers.txt -mtime +100 -print) ]]; t
   rm -r resolvers.txt 2>>/dev/null
   cowsay "DNSValidator" | lolcat
   sleep 4
-  dnsvalidator -tL https://public-dns.info/nameservers.txt -threads 200 -o resolvers.txt
+  dnsvalidator -tL https://public-dns.info/nameservers.txt -threads 200 -o resolvers.txt > /dev/null 2>&1
 fi
 
-
+#while read domain ; do puredns bruteforce ~/SecLists-master/Discovery/DNS/subdomains-top1million-110000.txt $domain --resolvers ~/resolvers.txt | tee -a subs.txt ; done < "$domains"
 
 
 
