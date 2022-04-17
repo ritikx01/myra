@@ -1,4 +1,4 @@
-#myra
+# MYRA
 ![](stash/myra.png)
 
 My Recon Automation (MYRA)
