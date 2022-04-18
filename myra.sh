@@ -50,7 +50,12 @@ httpx -silent -t 50 -timeout 10 -l ${out_folder}/subs.txt -p ${ports} -sc -cl -t
 printf "${cyan}"
 cowsay "Probing working http and https servers"
 printf "${reset}"
-cat ${out_folder}/subs.txt | httprobe | tee alive.txt
+httpx -l ${out_folder}/subs.txt -o ${out_folder}/alive.txt
+
+printf "${cyan}"
+cowsay "Crawl and gather js endpoints"
+printf "${reset}"
+gospider -S ${out_folder}/alive.txt -q -a -t 5 -c 10 --sitemap -o ${out_folder}/urls.txt
 
 
 
