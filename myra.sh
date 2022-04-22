@@ -56,8 +56,11 @@ printf "${cyan}"
 cowsay "Crawl and gather js endpoints"
 printf "${reset}"
 gospider -S ${out_folder}/alive.txt -q -a -t 5 -c 10 --sitemap -o ${out_folder}/urls.txt
+cat ${out_folder}/urls.txt  | grep -Eo 'https?://[^ ]+' | sed 's/]$//' | unfurl -u domains > ${out_folder}/sub_scrape.txt
 
-
+printf "${cyan}"
+cowsay "Subdomain Takeover Scan"
+NtHiM -f ${out_folder}/alive.txt -o ${out_folder}/sub_tko.txt
 
 
 
