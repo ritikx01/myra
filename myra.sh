@@ -26,7 +26,7 @@ sleep 2
 if [ ! -s "resolvers.txt" ] || [[ $(find resolvers.txt -mtime +100 -print) ]]; then
   echo -e "Resolvers seem older than 1 day\nGenerating custom resolvers${reset}"
   rm -r resolvers.txt 2>>/dev/null
-  cowsay "DNSValidator" | lolcat
+  cowsay "DNSValidator"
   sleep 4
   dnsvalidator -tL https://public-dns.info/nameservers.txt -threads 200 -o resolvers.txt > /dev/null 2>&1
 fi
@@ -37,10 +37,18 @@ printf "${reset}"
 while read domain ; do puredns bruteforce ~/wordlist/best-dns-wordlist.txt $domain --resolvers ~/resolvers.txt | tee -a ${out_folder}/subs.txt ; done < "$domains"
 
 printf "${cyan}"
+cowsay "Starting Subfinder"
+printf "${reset}"
+subfinder -dL ${domains} -o ${out_folder}/subfinder.txt
+cat ${out_folder}/subfinder.txt | anew ${out_folder}/subs.txt
+rm subfinder.txt
+
+printf "${cyan}"
 cowsay "Starting Amass"
 printf "${reset}"
 amass enum -df ${domains} -o ${out_folder}/amass.txt
-cat  ${out_folder}/amass.txt | anew ${out_folder}/subs.txt
+cat ${out_folder}/amass.txt | anew ${out_folder}/subs.txt
+rm amass.txt
 
 printf "${cyan}"
 cowsay "Starting Portscan"
