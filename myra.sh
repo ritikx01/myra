@@ -61,6 +61,12 @@ printf "${reset}"
 httpx -l ${out_folder}/subs.txt -o ${out_folder}/alive.txt
 
 printf "${cyan}"
+cowsay "Generating custom wordlist from robots.txt"
+printf "${reset}"
+httpx -l ${out_folder}/subs.txt -path /robots.txt -silent -o robots.txt; for url in $(cat robots.txt);do http -b $url 2>/dev/null | grep 'Disallow' | awk -F ' ' '{print $2}' | cut -c 2- | anew ${out_folder}/robot-words.txt;done
+rm robots.txt
+
+printf "${cyan}"
 cowsay "Crawl and gather js endpoints"
 printf "${reset}"
 gospider -S ${out_folder}/alive.txt -q -a -t 5 -c 10 --sitemap -o ${out_folder}/urls.txt
