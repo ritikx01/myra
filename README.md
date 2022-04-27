@@ -2,7 +2,8 @@
 ![](stash/myra.png)
 
 My Recon Automation (MYRA)
-
+### What it does
+![](stash/myra_mind.png)
 
 ### Tools used
 
