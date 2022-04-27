@@ -13,7 +13,7 @@ Output will be in the Output folder in myra directory.
 1. Create a directory `hunt` in the home folder.
 `mkdir ~/hunt`
 2. Create organisation directory. Eg: twitter.
-3. Put root domains in domains.txt in organisation directory. Eg: twitter/domains.txt
+3. Put root domains in domains.txt in organisation directory. Eg: `~/hunt/twitter/domains.txt`
 
 ### Installation
 ```bash
