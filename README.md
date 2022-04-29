@@ -19,7 +19,8 @@ Output will be in the Output folder in myra directory.
 ```bash
 git clone https://github.com/ritikx01/myra.git
 cd myra
-chnod +x myra.sh
+chnod +x myra.sh install.sh
+./install.sh
 ```
 
 ### Tools used
