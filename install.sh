@@ -21,36 +21,58 @@ wget "https://raw.githubusercontent.com/ritikx01/figlet_fonts/main/Delta%20Corps
 mv .tmp/dcp1.flf /usr/share/figlet
 apt install figlet lolcat cowsay
 
-mkdir ~/Tools 2>/dev/null
-#DNS validator
+mkdir $HOME/Tools 2>/dev/null
+# DNS validator
 cowsay DNS Validator | lolcat
-git clone https://github.com/vortexau/dnsvalidator.git ~/Tools/dnsvalidator 2>/dev/null
-cd ~/Tools/dnsvalidator
+git clone https://github.com/vortexau/dnsvalidator.git $HOME/Tools/dnsvalidator 2>/dev/null
+cd $HOME/Tools/dnsvalidator
 python3 setup.py install > /dev/null 2>&1
-#MassDNS
+cd $curr_dir
+# MassDNS
 cowsay MassDNS | lolcat
-git clone https://github.com/blechschmidt/massdns.git ~/Tools/massdns 2>/dev/null
-cd ~/Tools/massdns
+git clone https://github.com/blechschmidt/massdns.git $HOME/Tools/massdns 2>/dev/null
+cd $HOME/Tools/massdns
 make >/dev/null 2>&1
 sudo cp bin/massdns /usr/local/bin
-#PureDNS
+cd $curr_dir
+# PureDNS
 cowsay PureDNS | lolcat
 go install github.com/d3mondev/puredns/v2@latest
-#Subfinder
+# Subfinder
 cowsay Subfinder | lolcat
 go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
 # Amass
 cowsay amass | lolcat
 go install -v github.com/OWASP/Amass/v3/...@master
-#httpx
+# httpx
 cowsay httpx | lolcat
 go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
-#gospider
+# gospider
 cowsay gospider | lolcat
 GO111MODULE=on go get -u github.com/jaeles-project/gospider > /dev/null 2>&1
-#NtHiM
+# NtHiM
 cowsay "Now the host is mine" | lolcat
 cargo install NtHiM >/dev/null 2>&1
+# rustscan
+wget https://github.com/RustScan/RustScan/releases/download/2.0.1/rustscan_2.0.1_amd64.deb
+sudo dpkg -i rustscan_2.0.1_amd64.deb
+rm rustscan_2.0.1_amd64.deb
+# anew
+go install -v github.com/tomnomnom/anew@latest
+# tok
+wget https://raw.githubusercontent.com/tomnomnom/hacks/master/tok/main.go
+go mod init tok
+go mod tidy
+go build
+mv tok $HOME/go/bin
+rm main.go
+# Nuclei
+go install -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest
+# Duplicut
+git clone git clone https://github.com/nil0x42/duplicut $HOME/Tools/duplicut
+cd $HOME/Tools/duplicut
+make
+mv duplicut /usr/local/bin
 
 cd $curr_dir
 rm -rf .tmp
