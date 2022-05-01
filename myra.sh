@@ -37,7 +37,7 @@ fi
 printf "${cyan}"
 cowsay "Starting DNS bruteforce"
 printf "${reset}"
-while read domain ; do puredns bruteforce $HOME/SecLists-master/Discovery/DNS/subdomains-top1million-110000.txt $domain --resolvers $HOME/resolvers.txt --resolvers-trusted $HOME/trusted-resolvers.txt| tee -a ${out_folder}/subs.txt ; done < "$domains"
+while read domain ; do puredns bruteforce subdomains-top1million-110000.txt $domain --resolvers $HOME/resolvers.txt --resolvers-trusted $HOME/trusted-resolvers.txt| tee -a ${out_folder}/subs.txt ; done < "$domains"
 
 printf "${cyan}"
 cowsay "Starting Subfinder"

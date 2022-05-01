@@ -21,6 +21,9 @@ wget "https://raw.githubusercontent.com/ritikx01/figlet_fonts/main/Delta%20Corps
 mv .tmp/dcp1.flf /usr/share/figlet
 apt install figlet lolcat cowsay
 
+# Wordlist
+wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/subdomains-top1million-110000.txt
+
 mkdir $HOME/Tools 2>/dev/null
 # DNS validator
 cowsay DNS Validator | lolcat
