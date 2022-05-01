@@ -16,11 +16,12 @@ printf "${bcyan}Put the domain.txt file in $HOME/hunt. All the output generated 
 printf "Enter the folder name: "
 read folder_name
 domains="$HOME/hunt/${folder_name}/domains.txt"
+mkdir .tmp
 
 mkdir Output 2>/dev/null
-#mkdir Output/${folder_name} 2>/dev/null
 out_folder=Output/${folder_name}
 mkdir ${out_folder} 2>/dev/null
+mkdir ${out_folder}/wordlists 2>/dev/null
 
 printf "${cyan}DNS bruteforce using PureDNS\n"
 sleep 2
@@ -55,7 +56,7 @@ rm ${out_folder}/amass.txt
 printf "${cyan}"
 cowsay "Starting Portscan"
 printf "${reset}"
-httpx -silent -t 50 -timeout 10 -l ${out_folder}/subs.txt -p ${ports} -sc -cl -title -o ports.txt
+httpx -silent -t 50 -timeout 10 -l ${out_folder}/subs.txt -p ${ports} -o ${out_folder}/ports.txt
 
 printf "${cyan}"
 cowsay "Probing working http and https servers"
@@ -65,8 +66,16 @@ httpx -l ${out_folder}/subs.txt -o ${out_folder}/alive.txt
 printf "${cyan}"
 cowsay "Generating custom wordlist from robots.txt"
 printf "${reset}"
-httpx -l ${out_folder}/subs.txt -path /robots.txt -silent -o robots.txt; for url in $(cat robots.txt);do http -b $url 2>/dev/null | grep 'Disallow' | awk -F ' ' '{print $2}' | cut -c 2- | anew ${out_folder}/robot-words.txt;done
+httpx -l ${out_folder}/subs.txt -path /robots.txt -silent -o robots.txt; for url in $(cat robots.txt);do http -b $url 2>/dev/null | grep 'Disallow' | awk -F ' ' '{print $2}' | cut -c 2- | anew ${out_folder}/wordlists/robot-words.txt;done
 rm robots.txt
+
+printf "${cyan}"
+cowsay "Generating Subdomain bruteforce wordlist"
+cat ${out_folder}/subs.txt | tok > .tmp/tok.txt
+cat ${out_folder}/subs.txt | tok -delim-exceptions - >> .tmp/tok.txt
+duplicut .tmp/tok.txt -o ${out_folder}/wordlists/sub_domain.txt
+printf "${reset}"
+
 
 printf "${cyan}"
 cowsay "Crawl and gather js endpoints"
@@ -78,6 +87,15 @@ printf "${cyan}"
 cowsay "Subdomain Takeover Scan"
 NtHiM -f ${out_folder}/alive.txt -o ${out_folder}/sub_tko.txt
 
+printf "${cyan}"
+cowsay "Rustscan portscan"
+rustscan -a '${dommains}' --ulimit 5000 | grep Open | sed 's/Open //'| httpx -silent | tee ${out_folder}/rustscan.txt
+
+printf "${cyan}"
+cowsay "Nuclei Scan"
+cat ${out_folder}/alive.txt ${out_folder}/ports.txt ${out_folder}/rustscan.txt | anew ${out_folder}/alive_ports.txt
+cat ${out_folder}/alive_ports.txt | httpx -silent | nuclei -o ${out_folder}/nuclei.txt
 
 
+rm -rf .tmp
 printf "Done${reset}\n"
