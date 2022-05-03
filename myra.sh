@@ -31,7 +31,7 @@ if [ ! -s "resolvers.txt" ] || [[ $(find resolvers.txt -mtime +100 -print) ]]; t
   cowsay "DNSValidator"
   sleep 4
   dnsvalidator -tL https://public-dns.info/nameservers.txt -threads 200 -o resolvers.txt > /dev/null 2>&1
-  echo "1.1.1.1\n1.0.0.1\n8.8.8.8\n8.8.4.4\n9.9.9.9\n149.112.112.112" > $HOME/trusted-resolvers.txt
+  echo -e "1.1.1.1\n1.0.0.1\n8.8.8.8\n8.8.4.4\n9.9.9.9\n149.112.112.112" > $HOME/trusted-resolvers.txt
 fi
 
 printf "${cyan}"
