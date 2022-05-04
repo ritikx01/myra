@@ -56,7 +56,7 @@ rm ${out_folder}/amass.txt
 printf "${cyan}"
 cowsay "Starting Portscan"
 printf "${reset}"
-httpx -silent -t 50 -timeout 10 -l ${out_folder}/subs.txt -p ${ports} -o ${out_folder}/ports.txt
+httpx -t 50 -timeout 10 -l ${out_folder}/subs.txt -p ${ports} -o ${out_folder}/ports.txt
 
 printf "${cyan}"
 cowsay "Probing working http and https servers"
@@ -66,7 +66,7 @@ httpx -l ${out_folder}/subs.txt -o ${out_folder}/alive.txt
 printf "${cyan}"
 cowsay "Generating custom wordlist from robots.txt"
 printf "${reset}"
-httpx -l ${out_folder}/subs.txt -path /robots.txt -silent -o robots.txt; for url in $(cat robots.txt);do http -b $url 2>/dev/null | grep 'Disallow' | awk -F ' ' '{print $2}' | cut -c 2- | anew ${out_folder}/wordlists/robot-words.txt;done
+httpx -l ${out_folder}/subs.txt -path /robots.txt -o robots.txt; for url in $(cat robots.txt);do http -b $url 2>/dev/null | grep 'Disallow' | awk -F ' ' '{print $2}' | cut -c 2- | anew ${out_folder}/wordlists/robot-words.txt;done
 rm robots.txt
 
 printf "${cyan}"
@@ -89,12 +89,12 @@ NtHiM -f ${out_folder}/alive.txt -o ${out_folder}/sub_tko.txt
 
 printf "${cyan}"
 cowsay "Rustscan portscan"
-rustscan -a '${dommains}' --ulimit 5000 | grep Open | sed 's/Open //'| httpx -silent | tee ${out_folder}/rustscan.txt
+rustscan -a '${dommains}' --ulimit 5000 | grep Open | sed 's/Open //'| httpx | tee ${out_folder}/rustscan.txt
 
 printf "${cyan}"
 cowsay "Nuclei Scan"
 cat ${out_folder}/alive.txt ${out_folder}/ports.txt ${out_folder}/rustscan.txt | anew ${out_folder}/alive_ports.txt
-cat ${out_folder}/alive_ports.txt | httpx -silent | nuclei -o ${out_folder}/nuclei.txt
+cat ${out_folder}/alive_ports.txt | httpx | nuclei -o ${out_folder}/nuclei.txt
 
 
 rm -rf .tmp
