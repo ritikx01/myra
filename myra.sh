@@ -56,12 +56,12 @@ rm ${out_folder}/amass.txt
 printf "${cyan}"
 cowsay "Starting Portscan"
 printf "${reset}"
-httpx -t 50 -timeout 10 -l ${out_folder}/subs.txt -p ${ports} -o ${out_folder}/ports.txt
+httpx -v -t 50 -timeout 10 -l ${out_folder}/subs.txt -p ${ports} -o ${out_folder}/ports.txt
 
 printf "${cyan}"
 cowsay "Probing working http and https servers"
 printf "${reset}"
-httpx -l ${out_folder}/subs.txt -o ${out_folder}/alive.txt
+httpx -v -l ${out_folder}/subs.txt -o ${out_folder}/alive.txt
 
 printf "${cyan}"
 cowsay "Generating custom wordlist from robots.txt"
